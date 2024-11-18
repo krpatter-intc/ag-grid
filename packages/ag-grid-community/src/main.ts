@@ -248,6 +248,7 @@ export {
     ColumnAdvancedFilterModel,
     TextAdvancedFilterModel,
     NumberAdvancedFilterModel,
+    BigIntAdvancedFilterModel,
     BooleanAdvancedFilterModel,
     DateAdvancedFilterModel,
     DateStringAdvancedFilterModel,
