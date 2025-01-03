@@ -2,8 +2,10 @@
 
 ## Setup
 
+-   Make sure to use wsl/bash for clone and install so that line endings are good
 -   Make sure to use node `20.10.0` or newer
--   `npm install --force` (check notes/errors below for details)
+-   `yarn install` or ? `npm install --force` (check notes/errors below for details)
+    -   I'm not confident on whether to use npm or yarn for the install (though there is clearly an existing yarn.lock)
 
 ## Summary
 
@@ -22,7 +24,7 @@ I'm not sure what order things are built as it seems I need to manually delete t
 -   `packages/ag-grid-enterprise`
 -   `packages/ag-grid-react`
 
-You can build some of these items indvidually and it seems that I often have to manually build using this:
+You can build some of these items individually and it seems that I often have to manually build using this:
 
 -   `npx nx run ag-grid-community:build:umd`
 -   `npx nx run ag-grid-enterprise:build:umd`
@@ -31,6 +33,15 @@ You can build some of these items indvidually and it seems that I often have to 
 The `build` command will build the vue and angular and it seems to modify the angular code in place.
 
 The community and enterprise have dependencies that go back and forth on each other (for things like data types) so I'm not really sure how that is dealt with (though I suspect it is why I often have to just delete the dist directory and redo the whole build flow)
+
+## Build Release
+
+To make a release:
+
+-   copy packages/ag-grid-community/dist -> releases/ag-grid-community/dist
+-   copy packages/ag-grid-community/styles -> releases/ag-grid-community/styles
+-   copy packages/ag-grid-community/package.json -> releases/ag-grid-community/package.json
+-   (repeat for enterprise)
 
 ## Errors
 
