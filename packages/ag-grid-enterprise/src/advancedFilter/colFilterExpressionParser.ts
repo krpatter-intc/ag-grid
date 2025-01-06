@@ -239,7 +239,7 @@ class OperandParser implements Parser {
         return this.operand;
     }
 
-    public getModelValue(): string | number | bigint{
+    public getModelValue(): string | number | bigint {
         return this.modelValue;
     }
 
@@ -271,7 +271,7 @@ class OperandParser implements Parser {
                         this.valid = false;
                         this.validationMessage = advFilterExpSvc.translate('advancedFilterValidationNotANumber');
                     }
-                break;
+                    break;
                 case 'date':
                 case 'dateString':
                     if (modelValue == null) {
@@ -520,7 +520,11 @@ export class ColFilterExpressionParser {
                 operand = Number(operand);
                 break;
             case 'bigint':
-                operand = BigInt(operand);
+                try {
+                    operand = BigInt(operand);
+                } catch {
+                    operand = undefined;
+                }
                 break;
             case 'date':
             case 'dateString':
@@ -630,7 +634,7 @@ export class ColFilterExpressionParser {
     }
 
     private doesOperandNeedQuotes(baseCellDataType?: BaseCellDataType): boolean {
-        return baseCellDataType !== 'number' && baseCellDataType !== "bigint";
+        return baseCellDataType !== 'number' && baseCellDataType !== 'bigint';
     }
 
     private addToListAndGetIndex<T>(list: T[], value: T): number {

@@ -118,7 +118,7 @@ export class ConditionPillWrapperComp extends Component<AdvancedFilterBuilderEve
     private createOperandPill(): void {
         // Date inputs want iso string, so read straight from model. For numbers, convert to string
         const { filter } = this.filterModel as Exclude<ColumnAdvancedFilterModel, BooleanAdvancedFilterModel>;
-        const key = ((typeof filter === 'number' || typeof filter === 'bigint') ? _toStringOrNull(filter) : filter) ?? '';
+        const key = (typeof filter === 'number' || typeof filter === 'bigint' ? _toStringOrNull(filter) : filter) ?? '';
         this.eOperandPill = this.createPill({
             key,
             // Convert from the input format to display format.
@@ -210,7 +210,11 @@ export class ConditionPillWrapperComp extends Component<AdvancedFilterBuilderEve
         if (this.baseCellDataType === 'number') {
             parsedOperand = _exists(operand) ? Number(operand) : '';
         } else if (this.baseCellDataType === 'bigint') {
-            parsedOperand = _exists(operand) ? BigInt(operand) : '';
+            try {
+                parsedOperand = _exists(operand) ? BigInt(operand) : '';
+            } catch {
+                parsedOperand = NaN;
+            }
         }
         (this.filterModel as any).filter = parsedOperand;
         this.validate();
