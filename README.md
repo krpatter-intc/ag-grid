@@ -4,8 +4,7 @@
 
 -   Make sure to use wsl/bash for clone and install so that line endings are good
 -   Make sure to use node `20.10.0` or newer
--   `yarn install` or ? `npm install --force` (check notes/errors below for details)
-    -   I'm not confident on whether to use npm or yarn for the install (though there is clearly an existing yarn.lock)
+-   `yarn install` - this can take overnight
 
 ## Summary
 
@@ -15,6 +14,7 @@ Mostly I've been running:
 
 -   `npx nx reset --only-cache`
 -   `npx nx run build --verbose`
+    - the build always fails on the docs but will complete for the community and enterprise builds of ag-grid
 
 ## Notes
 
@@ -42,6 +42,8 @@ To make a release:
 -   copy packages/ag-grid-community/styles -> releases/ag-grid-community/styles
 -   copy packages/ag-grid-community/package.json -> releases/ag-grid-community/package.json
 -   (repeat for enterprise)
+
+Note: I attempt to use the package dirs directly but run in to troubles due to existing `node_modules` directories used by the build process
 
 ## Errors
 
