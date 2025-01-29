@@ -85,7 +85,11 @@ export class AdvancedFilterExpressionService extends BeanStub implements NamedBe
             case 'number':
                 return _exists(operand) ? Number(operand) : null;
             case 'bigint':
-                return _exists(operand) ? BigInt(operand) : null;
+                try {
+                    return _exists(operand) ? BigInt(operand) : null;
+                } catch {
+                    return null;
+                }
             case 'date':
                 return _serialiseDate(this.valueSvc.parseValue(column, null, operand, undefined), false);
             case 'dateString': {

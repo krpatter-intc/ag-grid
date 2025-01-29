@@ -1,3 +1,70 @@
+# BUILD instructions - krpatter
+
+## Setup
+
+-   Make sure to use wsl/bash for clone and install so that line endings are good
+-   Make sure to use node `20.10.0` or newer
+-   `yarn install` - this can take overnight
+
+## Summary
+
+-   wsl/linux seems to required due to some bash script runs.
+
+Mostly I've been running:
+
+-   `npx nx reset --only-cache`
+-   `npx nx run build --verbose`
+    - the build always fails on the docs but will complete for the community and enterprise builds of ag-grid
+
+## Notes
+
+I'm not sure what order things are built as it seems I need to manually delete the `dist` directory in the main packages directory:
+
+-   `packages/ag-grid-community`
+-   `packages/ag-grid-enterprise`
+-   `packages/ag-grid-react`
+
+You can build some of these items individually and it seems that I often have to manually build using this:
+
+-   `npx nx run ag-grid-community:build:umd`
+-   `npx nx run ag-grid-enterprise:build:umd`
+-   `npx nx run ag-grid-react:build:umd`
+
+The `build` command will build the vue and angular and it seems to modify the angular code in place.
+
+The community and enterprise have dependencies that go back and forth on each other (for things like data types) so I'm not really sure how that is dealt with (though I suspect it is why I often have to just delete the dist directory and redo the whole build flow)
+
+## Build Release
+
+To make a release:
+
+-   copy packages/ag-grid-community/dist -> releases/ag-grid-community/dist
+-   copy packages/ag-grid-community/styles -> releases/ag-grid-community/styles
+-   copy packages/ag-grid-community/package.json -> releases/ag-grid-community/package.json
+-   (repeat for enterprise)
+
+Note: I attempt to use the package dirs directly but run in to troubles due to existing `node_modules` directories used by the build process
+
+## Errors
+
+#### This means you are using too old version of node
+
+/home/krpatter/.npm/\_npx/276/lib/node_modules/nx/src/utils/package-manager.js:138
+process.env.npm_config_legacy_peer_deps ??= 'true';
+
+### Could not resolve dependency during install
+
+```
+npm error peer eslint@"^8.56.0" from @typescript-eslint/parser@7.9.0
+npm error node_modules/@typescript-eslint/parser
+npm error   dev @typescript-eslint/parser@"^7.9.0" from the root project
+npm error   peer @typescript-eslint/parser@"^6.13.2 || ^7.0.0" from @nx/eslint-plugin@18.3.4
+npm error   node_modules/@nx/eslint-plugin
+npm error     dev @nx/eslint-plugin@"18.3.4" from the root project
+```
+
+Not sure if it is the right thing to do, but ran `npm install --force`
+
 # JavaScript Data Grid | JavaScript Table
 
 <div align="center">
@@ -155,7 +222,7 @@ We've created several demos to showcase AG Grid's rich feature set across differ
 <br>
 </details>
 <details>
-    
+
   <summary>🧑‍💼 <b>HR Demo</b></summary>
   <br>
   <p>HR data example showing hierarchical employee data:</p>
@@ -413,31 +480,31 @@ AG Grid has a large and active community who have created an [ecosystem of 3rd p
 <div>
     <a href="https://www.ag-grid.com/community/tools-extensions/">
         <span><img src="https://github.com/ag-grid/ag-grid/blob/latest/documentation/ag-grid-docs/public/community/frameworks/react.svg?raw=true" align="center" width="16" height="16" alt="React Logo">&nbsp;React</span>
-    </a> • 
+    </a> •
     <a href="https://www.ag-grid.com/community/tools-extensions/">
         <span><img src="https://github.com/ag-grid/ag-grid/blob/latest/documentation/ag-grid-docs/public/community/frameworks/angular.svg?raw=true" align="center" width="16" height="16" alt="Angular Logo">&nbsp;Angular</span>
-    </a> • 
+    </a> •
     <a href="https://www.ag-grid.com/community/tools-extensions/">
         <span><img src="https://github.com/ag-grid/ag-grid/blob/latest/documentation/ag-grid-docs/public/community/frameworks/typescript.svg?raw=true" align="center" width="16" height="16" alt="TypeScript Logo">&nbsp;TypeScript</span>
-    </a> • 
+    </a> •
     <a href="https://www.ag-grid.com/community/tools-extensions/">
         <span><img src="https://github.com/ag-grid/ag-grid/blob/latest/documentation/ag-grid-docs/public/community/frameworks/vue.svg?raw=true" align="center" width="16" height="16" alt="Vue Logo">&nbsp;Vue</span>
-    </a> • 
+    </a> •
     <a href="https://www.ag-grid.com/community/tools-extensions/">
         <span><img src="https://github.com/ag-grid/ag-grid/blob/latest/documentation/ag-grid-docs/public/community/frameworks/python.svg?raw=true" align="center" width="16" height="16" alt="Python Logo">&nbsp;Python</span>
-    </a> • 
+    </a> •
     <a href="https://www.ag-grid.com/community/tools-extensions/">
         <span><img src="https://github.com/ag-grid/ag-grid/blob/latest/documentation/ag-grid-docs/public/community/frameworks/svelte.svg?raw=true" align="center" width="16" height="16" alt="Svelte Logo">&nbsp;Svelte</span>
-    </a> • 
+    </a> •
     <a href="https://www.ag-grid.com/community/tools-extensions/">
         <span><img src="https://github.com/ag-grid/ag-grid/blob/latest/documentation/ag-grid-docs/public/community/frameworks/solidjs.svg?raw=true" align="center" width="16" height="16" alt="SolidJS Logo">&nbsp;SolidJS</span>
-    </a> • 
+    </a> •
     <a href="https://www.ag-grid.com/community/tools-extensions/">
         <span><img src="https://github.com/ag-grid/ag-grid/blob/latest/documentation/ag-grid-docs/public/community/frameworks/.net.svg?raw=true" align="center" width="16" height="16" alt=".NET Logo">&nbsp;.NET</span>
-    </a> • 
+    </a> •
     <a href="https://www.ag-grid.com/community/tools-extensions/">
         <span><img src="https://github.com/ag-grid/ag-grid/blob/latest/documentation/ag-grid-docs/public/community/frameworks/rust.svg?raw=true" align="center" width="16" height="16" alt="Rust Logo">&nbsp;Rust</span>
-    </a> • 
+    </a> •
     <a href="https://www.ag-grid.com/community/tools-extensions/">
         <span><img src="https://github.com/ag-grid/ag-grid/blob/latest/documentation/ag-grid-docs/public/community/frameworks/laravel.svg?raw=true" align="center" width="16" height="16" alt="Laravel Logo">&nbsp;Laravel</span>
     </a>
@@ -507,7 +574,7 @@ Initially built to power [Integrated Charts](https://www.ag-grid.com/javascript-
 </div>
 
 <div align="center">
-    
+
 <hr/>
 
 <strong>Follow us to keep up to date with all the latest news from AG Grid:</strong>
