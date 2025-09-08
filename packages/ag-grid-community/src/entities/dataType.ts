@@ -47,7 +47,8 @@ export type BaseCellDataType =
     | 'dateString'
     | 'object'
     | 'dateTime'
-    | 'dateTimeString';
+    | 'dateTimeString'
+    | 'bigint';
 
 interface BaseDataTypeDefinition<TValueType extends BaseCellDataType, TData = any, TValue = any, TContext = any> {
     /** The underlying data type */
@@ -110,6 +111,10 @@ export interface TextDataTypeDefinition<TData = any, TContext = any>
 export interface NumberDataTypeDefinition<TData = any, TContext = any>
     extends BaseDataTypeDefinition<'number', TData, number, TContext> {}
 
+/** Represents a `'bigint'` data type (type `bigint`). */
+export interface BigIntDataTypeDefinition<TData = any, TContext = any>
+    extends BaseDataTypeDefinition<'bigint', TData, bigint, TContext> {}
+
 /** Represents a `'boolean'` data type (type `boolean`). */
 export interface BooleanDataTypeDefinition<TData = any, TContext = any>
     extends BaseDataTypeDefinition<'boolean', TData, boolean, TContext> {}
@@ -153,6 +158,7 @@ export type CheckDataTypes<Obj extends Record<K, any>, K extends keyof any = Bas
 export type DataTypeDefinition<TData = any, TValue = any, TContext = any> =
     | TextDataTypeDefinition<TData, TContext>
     | NumberDataTypeDefinition<TData, TContext>
+    | BigIntDataTypeDefinition<TData, TContext>
     | BooleanDataTypeDefinition<TData, TContext>
     | DateDataTypeDefinition<TData, TContext>
     | DateStringDataTypeDefinition<TData, TContext>
