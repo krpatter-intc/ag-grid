@@ -55,6 +55,17 @@ export interface NumberAdvancedFilterModel {
     filter?: number;
 }
 
+/** Represents a single filter condition for a number column */
+export interface BigIntAdvancedFilterModel {
+    filterType: 'bigint';
+    /** The ID of the column being filtered. */
+    colId: string;
+    /** The filter option that is being applied. */
+    type: ScalarAdvancedFilterModelType;
+    /** The value to filter on. */
+    filter?: number;
+}
+
 /** Represents a single filter condition for a date column */
 export interface DateAdvancedFilterModel {
     filterType: 'date';
@@ -126,6 +137,7 @@ export type ColumnAdvancedFilterModel =
     | DateTimeAdvancedFilterModel
     | DateTimeStringAdvancedFilterModel
     | NumberAdvancedFilterModel
+    | BigIntAdvancedFilterModel
     | TextAdvancedFilterModel;
 
 // Line below used for type checking

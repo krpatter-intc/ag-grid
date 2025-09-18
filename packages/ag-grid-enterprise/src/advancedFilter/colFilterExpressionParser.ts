@@ -184,12 +184,18 @@ class OperandParser implements Parser {
     public endPosition: number | undefined;
     private quotes: `'` | `"` | undefined;
     private operand = '';
-    private modelValue: number | string;
+    private modelValue: bigint | number | string;
     private validationMessage: string | null = null;
 
-    private filterValidationSetters: Record<BaseCellDataType, (modelValue: string | number | null) => any> = {
+    private filterValidationSetters: Record<BaseCellDataType, (modelValue: string | number | bigint | null) => any> = {
         number: () => {
             if (this.quotes || isNaN(this.modelValue as number)) {
+                this.valid = false;
+                this.validationMessage = this.params.advFilterExpSvc.translate('advancedFilterValidationNotANumber');
+            }
+        },
+        bigint: () => {
+            if (this.quotes || isNaN(Number(this.modelValue))) {
                 this.valid = false;
                 this.validationMessage = this.params.advFilterExpSvc.translate('advancedFilterValidationNotANumber');
             }
@@ -224,7 +230,7 @@ class OperandParser implements Parser {
                 return true;
             }
         } else if (char === ')') {
-            if (this.baseCellDataType === 'number' || !this.quotes) {
+            if (this.baseCellDataType === 'number' || this.baseCellDataType === 'bigint' || !this.quotes) {
                 this.parseOperand(false, position - 1);
                 return true;
             } else {
@@ -259,7 +265,7 @@ class OperandParser implements Parser {
         return this.operand;
     }
 
-    public getModelValue(): string | number {
+    public getModelValue(): string | number | bigint {
         return this.modelValue;
     }
 
@@ -297,6 +303,13 @@ export class ColFilterExpressionParser {
 
     private operandValueGetters: Record<BaseCellDataType, (operand: any) => any> = {
         number: Number,
+        bigint: (operand) => {
+            try {
+                return BigInt(operand);
+            } catch {
+                return undefined;
+            }
+        },
         date: (operand) => this.params.valueSvc.parseValue(this.columnParser!.column!, null, operand, undefined),
         dateString: (...args) => this.operandValueGetters.date(...args),
         dateTime: (...args) => this.operandValueGetters.date(...args),
@@ -620,7 +633,7 @@ export class ColFilterExpressionParser {
     }
 
     private doesOperandNeedQuotes(baseCellDataType?: BaseCellDataType): boolean {
-        return baseCellDataType !== 'number';
+        return baseCellDataType !== 'number' && baseCellDataType !== 'bigint';
     }
 
     private addToListAndGetIndex<T>(list: T[], value: T): number {

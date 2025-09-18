@@ -29,6 +29,7 @@ const inputComponentDescriptors: {
     [S in BaseCellDataType]: [SupportedComponent] | [SupportedComponent, (instance: SupportedInstances) => void];
 } = {
     number: [AgInputNumberField],
+    bigint: [AgInputNumberField],
     boolean: [AgInputTextField],
     object: [AgInputTextField],
     text: [AgInputTextField],
@@ -186,7 +187,7 @@ export class InputPillComp extends Component<InputPillCompEvent> {
         if (!_exists(displayValue)) {
             value = this.advFilterExpSvc.translate('advancedFilterBuilderEnterValue');
             classList.add('ag-advanced-filter-builder-value-empty');
-        } else if (this.params.type === 'number') {
+        } else if (this.params.type === 'number' || this.params.type === 'bigint') {
             value = displayValue;
             classList.add('ag-advanced-filter-builder-value-number');
         } else {
